@@ -1,0 +1,129 @@
+[
+  {
+    "id": 1,
+    "location": "\u0627\u0644\u0645\u0627\u0631\u062a\u064a\u0646\u064a",
+    "floor": "\u0623\u0648\u0644",
+    "space": "200",
+    "direction": "\u063a\u0631\u0628\u064a",
+    "description": "Near of a pharmacy and a hospital, no need for fixing or any furniture, the house is ready.",
+    "no_rooms": 3,
+    "created_at": "2023-05-16T08:58:16.000000Z",
+    "updated_at": "2023-05-16T08:58:16.000000Z",
+    "images": [
+      {
+        "id": 1,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-23.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 1,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "location": "\u0627\u0644\u0623\u0634\u0631\u0641\u064a\u0629",
+    "floor": "\u062b\u0627\u0644\u062b",
+    "space": "200",
+    "direction": "\u0634\u0631\u0642\u064a \u0634\u0645\u0627\u0644\u064a",
+    "description": "Near of a pharmacy and a hospital, no need for fixing or any furniture, the house is ready.",
+    "no_rooms": 4,
+    "created_at": "2023-05-16T08:58:16.000000Z",
+    "updated_at": "2023-05-16T08:58:16.000000Z",
+    "images": [
+      {
+        "id": 2,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-7.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 2,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      },
+      {
+        "id": 3,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-14.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 2,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "location": "\u0627\u0644\u0623\u0639\u0638\u0645\u0628\u0629",
+    "floor": "\u0631\u0627\u0628\u0639",
+    "space": "100",
+    "direction": "\u0634\u0645\u0627\u0644\u064a \u0634\u0631\u0642\u064a",
+    "description": "Near of a pharmacy and a hospital, no need for fixing or any furniture, the house is ready.",
+    "no_rooms": 3,
+    "created_at": "2023-05-16T08:58:16.000000Z",
+    "updated_at": "2023-05-16T08:58:16.000000Z",
+    "images": [
+      {
+        "id": 4,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-14.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 3,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      },
+      {
+        "id": 5,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-14.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 3,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      },
+      {
+        "id": 6,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-14.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 3,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "location": "\u0633\u064a\u0641 \u0627\u0644\u062f\u0648\u0644\u0629",
+    "floor": "\u062e\u0627\u0645\u0633",
+    "space": "300",
+    "direction": "\u0634\u0631\u0642\u064a",
+    "description": "Near of a pharmacy and a hospital, no need for fixing or any furniture, the house is ready.",
+    "no_rooms": 3,
+    "created_at": "2023-05-16T08:58:16.000000Z",
+    "updated_at": "2023-05-16T08:58:16.000000Z",
+    "images": [
+      {
+        "id": 7,
+        "img": "https:\/\/echinest.sirv.com\/Estates\/download-19.jpg",
+        "description": null,
+        "imageable_type": "App\\Models\\House",
+        "imageable_id": 4,
+        "created_at": "2023-05-16T08:58:16.000000Z",
+        "updated_at": "2023-05-16T08:58:16.000000Z"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "location": "\u0627\u0644\u0633\u0644\u064a\u0645\u0627\u0646\u064a\u0629",
+    "floor": "\u0623\u0648\u0644",
+    "space": "200",
+    "direction": "\u0634\u0645\u0627\u0644\u064a",
+    "description": "Near of a pharmacy and a hospital, no need for fixing or any furniture, the house is ready.",
+    "no_rooms": 3,
+    "created_at": "2023-05-16T08:58:16.000000Z",
+    "updated_at": "2023-05-16T08:58:16.000000Z",
+    "images": []
+  }
+]
