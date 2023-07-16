@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:real_estate/createUser.dart';
 import 'package:real_estate/cubit/app_cubit.dart';
+import 'package:real_estate/widget/customTextField.dart';
 
 import 'color/colorMain.dart';
 
 class loginScreen extends StatelessWidget {
    loginScreen({Key? key}) : super(key: key);
 final fromKey=GlobalKey<FormState>();
-TextEditingController emailController=TextEditingController();
-TextEditingController passwordController=TextEditingController();
+   TextEditingController emailController=TextEditingController(text: "");
+   TextEditingController passwordController=TextEditingController(text: "");
 final PasswordFoucs=FocusNode();
 final emailFoucs=FocusNode();
   @override
@@ -32,28 +35,53 @@ final emailFoucs=FocusNode();
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.blue[100],
+                    backgroundColor: ColorBlue,
                     radius: 50,
                     child: Image.asset('assets/images/boy.png',fit: BoxFit.fill,height: 70,width: 70),
                   ),
                   SizedBox(height: 10,),
                   Text("تسجيل الدخول ",style: TextStyle(fontSize: 25)),
                   SizedBox(height: 100,),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode:emailFoucs ,
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      hintText: "الايميل",
-                      //hintStyle: TextStyle(color: Colors.black),
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.blue.shade50)
-                      ),
+                  CustomTextField(
+                      hint_text: "الايميل",
+                      readOnly: false,
+                      line: 1,
+                      suffix: false,
+                      suffix_icon: null,
+                      controller:emailController ,
+                      keyboard: TextInputType.emailAddress ,
+                      validate: (value) {
+                        if(value!.isEmpty)
+                        {
+                          emailFoucs.requestFocus();
+                          return "رجاءً إملاءه , أنه فارغ";
+                        }
+                        // if(value.length<6)
+                        // {
+                        //   emailFoucs.requestFocus();
+                        //   return "لا يسمح بأقل من 6 محارف";
+                        // }
+                      },
+                      obsc: false,
+                      focusNode:emailFoucs ,
+                      prefixIcon: Icon(Icons.email,color: Colors.grey),
+                  ),
+                  SizedBox(height: 30,),
+                  CustomTextField(
+                    hint_text: "كلمة السر",
+                    readOnly: false,
+                    line: 1,
+                    suffix: true,
+                    suffix_icon: IconButton(
+                      icon: Icon(AppCubit.get(context).visib==true?Icons.visibility_off:Icons.visibility,color: ColorBlue,),
+                      onPressed: () {
+                        AppCubit.get(context).ChangeIconVisib();
+                      },
 
                     ),
-                    validator: (value) {
+                    controller:passwordController ,
+                    keyboard: TextInputType.visiblePassword,
+                    validate: (value) {
                       if(value!.isEmpty)
                       {
                         emailFoucs.requestFocus();
@@ -65,49 +93,26 @@ final emailFoucs=FocusNode();
                         return "لا يسمح بأقل من 6 محارف";
                       }
                     },
+                    obsc: AppCubit.get(context).visib,
+                    focusNode:PasswordFoucs ,
+                    prefixIcon: Icon(Icons.lock,color: Colors.grey),
                   ),
                   SizedBox(height: 30,),
-                  TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    focusNode: PasswordFoucs,
-                    controller: passwordController,
-                    obscureText: AppCubit.get(context).visib,
-                    decoration: InputDecoration(
-                      hintText: "كلمة السر",
-                      //hintStyle: TextStyle(color: Colors.black),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                          icon: Icon(AppCubit.get(context).visib==true?Icons.visibility_off:Icons.visibility,color: Colors.blue[300],),
-                        onPressed: () {
-                         AppCubit.get(context).ChangeIconVisib();
-                        },
-
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.blue)
-                      ),
-
-                    ),
-                    validator: (value) {
-                      if(value!.isEmpty)
-                        {
-                          PasswordFoucs.requestFocus();
-                          return "رجاءً إملاءه , أنه فارغ";
-                        }
-                      if(value.length<6)
-                        {
-                          PasswordFoucs.requestFocus();
-                          return "لا يسمح بأقل من 6 محارف";
-                        }
-                    },
-                  ),
-                  SizedBox(height: 30,),
-                  TextButton(
+                  state is AppLoadingPostLogin?
+                    Center(
+                            child: Container(height: 100.h,child: Center(child: CircularProgressIndicator(color: ColorBlue,))),
+                          )
+                  :TextButton(
                     onPressed: () {
+                     print("hhhhhhhhhhhhhher");
+                     print(emailController.text.toString());
+                     print(passwordController.text.toString());
+
                     if(fromKey.currentState!.validate())
                       {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم")));
+
+                        AppCubit.get(context).loginDio(context: context,email:emailController.text.toString(),password: passwordController.text.toString() );
+
                       }
                     },
 
@@ -115,23 +120,25 @@ final emailFoucs=FocusNode();
                       padding: EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffFF1E88E5).withOpacity(0.6)
+                        color: ColorBlue
                       ),
                       height: 50,
                       width: double.infinity,
 
-                      child: Center(child: Text("تسجيل",style: TextStyle(color: Colors.black87),)),
+                      child: Center(child: Text("تسجيل",style: TextStyle(color: Colors.white),)),
                     ),
-                  ),
-                  SizedBox(height: 5,),
+                  )
+
+
+                  ,SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("هل نسيت كلمة السر؟!"),
+                      const Text("لم تنشأ حساب ؟!"),
                       TextButton(onPressed: () {
-
-                      }, child: Text("اضغط هنا",style: TextStyle(color: Color(0xffFF1E88E5).withOpacity(0.9)),)),
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => const createUser(),));
+                      }, child: Text("اضغط هنا",style: TextStyle(color: ColorBlue),)),
                     ],
                   )
                 ],
