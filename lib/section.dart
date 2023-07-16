@@ -3,18 +3,64 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:real_estate/color/colorMain.dart';
 import 'package:real_estate/cubit/app_cubit.dart';
+import 'package:flutter/src/widgets/image.dart' as flutterImage;
 import 'package:real_estate/secondry.dart';
+import 'jsons/housesJson.dart';
+import 'package:intl/intl.dart';
+
 
 class section extends StatefulWidget {
-  const section({Key? key}) : super(key: key);
+  List<Houses> ?ListHouses;
+   section({Key? key,required this.ListHouses}) : super(key: key);
 
   @override
   State<section> createState() => _sectionState();
 }
 
 class _sectionState extends State<section> {
+  List<Houses> _searchResult = [];
+
   @override
+  void initState() {
+    super.initState();
+    _searchResult.addAll(widget.ListHouses as Iterable<Houses> );
+  }
+
+  void _filterList(String searchQuery) {
+    _searchResult.clear();
+    if (searchQuery.isNotEmpty) {
+      widget.ListHouses?.forEach((item) {
+        if (item.post!.postsable!.location!.contains(searchQuery)
+            ||item.post!.postsable!.space!.contains(searchQuery)
+            // ||item.post!.postsable!.roomNumber!.toString().contains(searchQuery)
+        ) {
+          setState(() {
+            _searchResult.add(item);
+          });
+        }
+        else
+          {
+           setState(() {
+             // _searchResult.clear();
+           });
+            print("No Content");
+          }
+        // if (item.user!.name!.toLowerCase().contains(searchQuery.toLowerCase())) {
+        //   _searchResult.add(item);
+        // }
+      });
+    } else {
+      setState(() {
+        _searchResult.addAll(widget.ListHouses as Iterable<Houses>);
+      });
+
+    }
+
+  }
+
   Widget build(BuildContext context) {
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
@@ -32,13 +78,19 @@ class _sectionState extends State<section> {
                       color: Color(0xffF2F7FF)
                   ),
                   child: TextField(
+
+                      onChanged: (value) {
+                        print(value);
+                        _filterList(value);
+                      },
+                      // AppCubit.get(context).functionSearch(value: value,context: context);
+
                       cursorColor: Colors.white,
 
                       decoration:InputDecoration(
                         filled: false,
                         fillColor: Color(0xffDEEAFD),
-
-                        hintText: "ابحث هنا",
+                        hintText: " ابحث هنا عن المنطقة أو السعر",
                         hintStyle: TextStyle(fontFamily: 'Vollkorn',color: Colors.black54,fontSize: 17.sp),
                         prefixIcon:  Icon(Icons.search,color: Color(0xffFFBDBDBD)),
 
@@ -73,10 +125,11 @@ class _sectionState extends State<section> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ClipRRect(
-                        child: (AppCubit.get(context).houses[index]['images']).isEmpty?
-                        Image.asset('assets/images/empty.png',width: 150.w,height:160.h,fit: BoxFit.cover,)
+                        child:
+                            (_searchResult[index].post?.postsable?.images)!.isEmpty?
+                        flutterImage.Image.asset('assets/images/empty.png',width: 150.w,height:160.h,fit: BoxFit.cover,)
                             :
-                        Image.network('${AppCubit.get(context).houses[index]['images'][0]['img']}'
+                        flutterImage.Image.network('${_searchResult[index].post?.postsable?.images[0].img}'
                           ,width: 150.w,height:160.h,fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(15),
@@ -95,14 +148,16 @@ class _sectionState extends State<section> {
                            mainAxisAlignment: MainAxisAlignment.center,
                          crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
-
-                            Text("الموقع  الفرقان جانب مدرسة .. ",style: TextStyle(fontWeight: FontWeight.bold, overflow:TextOverflow.ellipsis )),
-                            Text("السعر 150 مليون ل.س", style: TextStyle(fontSize: 18.sp)),
-                            Text("تاريخ النشر 20/12/2023",style: TextStyle(color: Colors.grey)),
-                            //RSizedBox(height: 5,),
+                            RSizedBox(height: 5.h,),
+                            Text("العنوان ${_searchResult[index].post?.postsable?.location} ",style: TextStyle(fontWeight: FontWeight.bold, overflow:TextOverflow.ellipsis ,fontSize: 17.sp)),
+                            RSizedBox(height: 7.h,),
+                            Text("السعر ${_searchResult[index].price} مليون ل.س", style: TextStyle(fontSize: 17.sp)),
+                            RSizedBox(height: 7.h,),
+                            Text("تاريخ النشر ${formatter.format(_searchResult[index].post!.postDate as DateTime)}",style: TextStyle(color: Colors.grey,fontSize: 15.sp)),
+                            RSizedBox(height: 5,),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => second(index)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => second(_searchResult[index])));
                                 },
                                 child: Text("للمزيد من التفاصيل...",style: TextStyle(color: MainDark,fontSize: 15.sp),
 
@@ -117,7 +172,7 @@ class _sectionState extends State<section> {
                   ),
                 ) ,
                 separatorBuilder: (context, index) =>SizedBox(height: 10) ,
-                itemCount: 5),
+                itemCount: _searchResult.length),
           ),
         );
       },

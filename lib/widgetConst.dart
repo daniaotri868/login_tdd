@@ -1,7 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
- calling ()async{
-  const url='tel:+963943517166';
+ calling ({ number})async{
+  var url='tel:$number';
   if(await canLaunch(url) )
   {
     await launch(url);
@@ -10,8 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
     throw 'could not launch $url';
   }
 }
-messege ()async{
-  const url='sms:+963943517166';
+messege ({m})async{
+  var url='sms:$m';
   if(await canLaunch(url) )
   {
     await launch(url);

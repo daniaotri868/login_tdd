@@ -204,7 +204,7 @@ class _secondCarState extends State<secondCar> {
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: ColorbackgroundDark,
+                          color: Colors.blueGrey[50],
                         ),
                         height: 70,
                         width: double.infinity,

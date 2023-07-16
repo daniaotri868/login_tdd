@@ -1,14 +1,20 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:real_estate/cubit/app_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:http/http.dart' as http;
-
+// import 'package:http/http.dart' as http;
+import 'package:real_estate/token/cash_helper.dart';
 import 'loading.dart';
-void main() {
-  runApp(const MyApp());
+// import 'cash_helper.dart';
+// import 'cash_helper.dart';
+
+
+// List<Ca>
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await CachHelper.init();
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getDio(url: ''),
+      create: (context) => AppCubit()..CreateDataBase(),
       child: ScreenUtilInit(
         designSize: const Size(428, 926),
         minTextAdapt: true,
@@ -35,9 +41,9 @@ class MyApp extends StatelessWidget {
             ],
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                fontFamily: 'Vollkorn'
+                fontFamily: 'Tajawal'
             ),
-            home: Loading(),
+            home: Loading()
           );
         },
 

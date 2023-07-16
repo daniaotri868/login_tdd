@@ -8,14 +8,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:real_estate/color/colorMain.dart';
 import 'package:real_estate/cubit/app_cubit.dart';
 import 'package:real_estate/widgetConst.dart';
+import 'package:flutter/src/widgets/image.dart' as flutterImage;
+import 'package:intl/intl.dart';
+import 'jsons/housesJson.dart';
 
 
-class second extends StatelessWidget {
+class second extends StatefulWidget {
 
-   int   index;
+   Houses listH;
 
-   second( this.index);
+   second( this.listH);
+
+  @override
+  State<second> createState() => _secondState();
+}
+
+class _secondState extends State<second> {
   final CarouselController carouselController=CarouselController();
+
+   DateFormat formatter = DateFormat('dd/MM/yyyy');
+   int currentIndex=0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +36,7 @@ class second extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           body:  ConditionalBuilder(
-            condition: AppCubit.get(context).houses.isNotEmpty ,
+            condition: AppCubit.get(context).listHouses.isNotEmpty ,
             builder: (context) => SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -33,17 +45,17 @@ class second extends StatelessWidget {
                   Stack(
                     children: [
                       CarouselSlider(
-                        items: [1,2,3,4,5].map((e) {
+                        items: widget.listH.post?.postsable?.images.map((e) {
                           return Container(
                             margin: REdgeInsetsDirectional.all(2),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5)
                             ),
                             child: ClipRRect(
-                                child: (AppCubit.get(context).houses[index]['images']).isEmpty?
-                                Image.asset('assets/images/empty.png' , height: 300.h,width: double.infinity,fit: BoxFit.cover,)
+                                child: (widget.listH.post?.postsable?.images)!.isEmpty?
+                                flutterImage.Image.asset('assets/images/empty.png' , height: 300.h,width: double.infinity,fit: BoxFit.cover,)
                                     :
-                                Image.network('${AppCubit.get(context).houses[index]['images'][0]['img']}'
+                                flutterImage.Image.network('${e.img}'
                                   , height: 300.h,width: double.infinity,fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(5),
@@ -58,8 +70,11 @@ class second extends StatelessWidget {
                           height: 430.h,
                           viewportFraction: 1,
                           onPageChanged: (index, reason) {
-
-                            AppCubit.get(context).changCurrentIndex(index);
+                            // AppCubit.get(context).changCurrentIndex(index);
+                            print(index);
+                            setState(() {
+                              currentIndex=index;
+                            });
 
                           },
                         ),
@@ -90,23 +105,24 @@ class second extends StatelessWidget {
                       children: [
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(5, (index) =>  Padding(
+                            children: List.generate(widget.listH.post!.postsable!.images.length, (index) =>  Padding(
                               padding: REdgeInsetsDirectional.all(1),
-                              child: CircleAvatar(radius: 3,backgroundColor:AppCubit.get(context).currentIndex==index? MainDark:Colors.black38,),
+                              child: CircleAvatar(radius: 3,backgroundColor:currentIndex==index? ColorBlue:Colors.black38,),
                             ),)
                         ),
                         RSizedBox(height: 10,),
-                        Text("السعر 50 مليون سوري",style: TextStyle(color: benlight,fontSize: 22.sp),),
+                        Text("السعر ${widget.listH.price} مليون سوري",style: TextStyle(color: benlight,fontSize: 22.sp),),
                         RSizedBox(height: 4,),
                         Row(
                           children: [
-                            Icon(Icons.location_on_sharp,color: Colors.grey,size: 13),
+                            const Icon(Icons.location_on_sharp,color: Colors.grey,size: 13),
                             RSizedBox(width: 2,),
-                            Text("العنوان ${AppCubit.get(context).houses[index]['location']}  ",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                            Text("العنوان ${widget.listH.post?.postsable?.location}  ",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
                           ],
                         ),
                         RSizedBox(height: 12,),
-                        Text("تاريخ النشر : 12/20/2023  ",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                        Text("    تاريخ النشر : ${formatter.format(widget.listH.post!.postDate as DateTime)}            ",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                        RSizedBox(height: 7,),
                         Row(
                           children: [
                             Expanded(
@@ -121,11 +137,11 @@ class second extends StatelessWidget {
                                     padding: REdgeInsetsDirectional.all(4),
                                     child: Column(
                                       children: [
-                                        Image.asset('assets/images/house.png',width: 35.w,height: 35.h,),
+                                        flutterImage.Image.asset('assets/images/house.png',width: 35.w,height: 35.h,),
                                         RSizedBox(height: 5,),
                                         Text("المساحة",style: TextStyle(fontSize: 10,color: Colors.green),),
                                         RSizedBox(height: 1,),
-                                        Text("${AppCubit.get(context).houses[index]['space']}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
+                                        Text("${widget.listH.post?.postsable?.space}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
                                       ],
                                     ),
                                   ),
@@ -145,11 +161,11 @@ class second extends StatelessWidget {
                                     padding: REdgeInsetsDirectional.all(4),
                                     child: Column(
                                       children: [
-                                        Image.asset('assets/images/living-room (1).png',width: 35.w,height: 35.h,),
+                                        flutterImage.Image.asset('assets/images/living-room (1).png',width: 35.w,height: 35.h,),
                                         RSizedBox(height: 5,),
                                         Text("عدد الغرف ",style: TextStyle(fontSize: 10.sp,color: Colors.blue),),
                                         RSizedBox(height: 1,),
-                                        Text("${AppCubit.get(context).houses[index]['no_rooms']}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
+                                        Text("${widget.listH.post?.postsable?.roomNumber}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
                                       ],
                                     ),
                                   ),
@@ -167,11 +183,11 @@ class second extends StatelessWidget {
                                     padding:REdgeInsetsDirectional.all(4),
                                     child: Column(
                                       children: [
-                                        Image.asset('assets/images/building.png',width: 35.w,height: 35.h,),
+                                        flutterImage.Image.asset('assets/images/building.png',width: 35.w,height: 35.h,),
                                         RSizedBox(height: 5,),
                                         Text("الطابق",style: TextStyle(fontSize: 10.sp,color: Colors.orange),),
                                         RSizedBox(height: 1,),
-                                        Text("${AppCubit.get(context).houses[index]['floor']}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
+                                        Text("${widget.listH.post?.postsable?.floor}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
                                       ],
                                     ),
                                   ),
@@ -192,11 +208,11 @@ class second extends StatelessWidget {
                             padding: REdgeInsetsDirectional.all(4),
                             child: Column(
                               children: [
-                                Image.asset('assets/images/directions.png',width: 50.w,height: 30.h,),
+                                flutterImage.Image.asset('assets/images/directions.png',width: 50.w,height: 30.h,),
                                 RSizedBox(height: 3,),
                                 Text("الاتجاه",style: TextStyle(fontSize: 12.sp,color: Colors.red),),
                                 RSizedBox(height: 2,),
-                                Text("${AppCubit.get(context).houses[index]['direction']}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
+                                Text("${widget.listH.post?.postsable?.direction}",style: TextStyle(fontSize:15.sp,color: Colors.black),)
                               ],
                             ),
                           ),
@@ -212,7 +228,7 @@ class second extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("تفاصيل أكثر:",style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.w500),),
-                          Text("${AppCubit.get(context).houses[index]['description']}",style: TextStyle(color: Colors.black,fontSize: 15.sp),),
+                          Text("${widget.listH.post?.postsable?.description}",style: TextStyle(color: Colors.black,fontSize: 15.sp),),
                         ],
                       )),
                   Container(
@@ -225,7 +241,7 @@ class second extends StatelessWidget {
                           padding: REdgeInsetsDirectional.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: ColorbackgroundDark,
+                            color: Colors.blueGrey[50],
                           ),
                           height: 90.h,
                           width: double.infinity,
@@ -233,34 +249,34 @@ class second extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage('assets/images/person.png'),
+                                backgroundImage: NetworkImage('${widget.listH.user?.img}'),
+                                backgroundColor: ColorBlue,
                                 radius: 30,
                               ),
-                              RSizedBox(width: 10,),
-                              Center(child: Text("دانية عطري",style: TextStyle(fontSize: 15.sp),)),
+                              RSizedBox(width: 15,),
+                              Center(child: Text("${widget.listH.user?.name}",style: TextStyle(fontSize: 20.sp),)),
                               SizedBox(width: 120.w,),
                               IconButton(
                                   onPressed: () {
-                                    calling();
-
+                                    calling(number: widget.listH.user?.phone);
                                   }, icon: Container(
                                   width: 35.w,
                                   height: 35.h,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(7),
-                                      color: MainDark
+                                      color: ColorBlue
                                   ),
                                   child: Icon(Icons.phone,color: Colors.white,size: 17,)
                               )),
                               IconButton(
                                   onPressed: () {
-                                    messege();
+                                    messege(m:widget.listH.user?.phone );
                                   }, icon: Container(
                                   width: 53.w,
                                   height: 35.h,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(7),
-                                      color: MainDark
+                                      color: ColorBlue
                                   ),
                                   child: Icon(Icons.mail,color: Colors.white,size: 17,)
                               ))
